@@ -2,9 +2,9 @@
     "name": "PhantasmicDev.PackageTemplate.Tests",
     "rootNamespace": "PhantasmicDev.PackageTemplate.Tests",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "PhantasmicDev.PackageTemplate"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:c8d33d951ce18a546a75db2a8431fb59"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

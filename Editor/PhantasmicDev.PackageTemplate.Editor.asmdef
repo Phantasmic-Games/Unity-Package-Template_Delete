@@ -2,7 +2,7 @@
     "name": "PhantasmicDev.PackageTemplate.Editor",
     "rootNamespace": "PhantasmicDev.PackageTemplate.Editor",
     "references": [
-        "PhantasmicDev.PackageTemplate"
+        "GUID:c8d33d951ce18a546a75db2a8431fb59"
     ],
     "includePlatforms": [
         "Editor"
