@@ -29,7 +29,7 @@
           "LICENSE.md",
           "Third Party Notices.md"
         ],
-        "dest": "licenses"
+        "dest": "license"
       },
       {
         "src": "../",
@@ -55,12 +55,12 @@
         "dest": "api"
       },
       {
-        "src": "licenses",
+        "src": "license",
         "files": [
           "toc.yml",
           "*.md"
         ],
-        "dest": "licenses"
+        "dest": "license"
       }
     ],
     "resource": [
