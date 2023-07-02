@@ -1,0 +1,8 @@
+﻿- name: Manual
+  href: manual/
+- name: Scripting API
+  href: api/
+- name: Changelog
+  href: CHANGELOG.html
+- name: License
+  href: license/
