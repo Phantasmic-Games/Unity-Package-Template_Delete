@@ -1,0 +1,82 @@
+﻿{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../../../",
+          "files": [
+            "PhantasmicDev.PackageTemplate.csproj",
+            "PhantasmicDev.PackageTemplate.Editor.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "filter": "filterConfig.yml"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "toc.yml",
+          "index.md",
+          "changelog.md"
+        ]
+      },
+      {
+        "src": "../",
+        "files": [
+          "LICENSE.md",
+          "Third Party Notices.md"
+        ],
+        "dest": "licenses"
+      },
+      {
+        "src": "../",
+        "files": [
+          "CHANGELOG.md"
+        ]
+      },
+      {
+        "src": "manual",
+        "files": [
+          "toc.yml",
+          "*.md"
+        ],
+        "dest": "manual"
+      },
+      {
+        "src": "api",
+        "files": [
+          "toc.yml",
+          "*.yml",
+          "*.md"
+        ],
+        "dest": "api"
+      },
+      {
+        "src": "licenses",
+        "files": [
+          "toc.yml",
+          "*.md"
+        ],
+        "dest": "licenses"
+      }
+    ],
+    "resource": [
+      "resources/**"
+    ],
+    "globalMetadata": {
+      "_appTitle": "Package Template",
+      "_appFooter": "<span>Copyright © PhantasmicDev <br>Generated with <strong>DocFX</strong></span>",
+      "_enableSearch": true
+    },
+    "template": [
+      "default"
+    ],
+    "xref": [
+      "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
+    ],
+    "dest": "_site"
+  }
+}

@@ -1,0 +1,12 @@
+﻿apiRules:
+  - exclude:
+      uidRegex: ^System\.Object
+      type: Type
+      
+  - exclude:
+      uidRegex: UnityEngine
+      type: Namespace
+      
+  - exclude:
+      uidRegex: UnityEditor
+      type: Namespace
