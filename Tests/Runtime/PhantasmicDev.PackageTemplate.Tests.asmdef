@@ -1,6 +1,6 @@
 {
     "name": "PhantasmicDev.PackageTemplate.Tests",
-    "rootNamespace": "",
+    "rootNamespace": "PhantasmicDev.PackageTemplate.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "PhantasmicDev.PackageTemplate"
@@ -8,8 +8,6 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll"

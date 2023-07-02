@@ -1,6 +1,6 @@
 {
     "name": "PhantasmicDev.PackageTemplate.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "PhantasmicDev.PackageTemplate.Editor",
     "references": [
         "PhantasmicDev.PackageTemplate"
     ],

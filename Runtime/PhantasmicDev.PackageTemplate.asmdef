@@ -1,3 +1,14 @@
 {
-	"name": "PhantasmicDev.PackageTemplate"
+    "name": "PhantasmicDev.PackageTemplate",
+    "rootNamespace": "PhantasmicDev.PackageTemplate",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
