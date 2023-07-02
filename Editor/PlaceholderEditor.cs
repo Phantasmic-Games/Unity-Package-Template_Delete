@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace PhantasmicDev.PackageTemplate.Editor
 {
+    /// <summary>
+    /// This is a dummy script used for generating Editor documentation.
+    /// </summary>
     [CustomEditor(typeof(PlaceholderMonoBehaviour))]
     public class PlaceholderEditor : UnityEditor.Editor
     {
