@@ -32,34 +32,42 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-
-      - name: Remove and Clear Files
+          
+      
+      - name: Generate new GUIDs for .meta files
         run: |
-          echo "Initializing README.md"
-          echo "# ${{ inputs.package-name }}" > README.md
+          find . -type f -name "*.meta" | while read -r META_FILE; do
+            NEW_GUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+            sed -i "s/\"guid\": \"[0-9a-f]\{32\}\"/\"guid\": \"$NEW_GUID\"/" "$META_FILE"
+          done
+
+      #- name: Remove and Clear Files
+      #  run: |
+      #    echo "Initializing README.md"
+      #    echo "# ${{ inputs.package-name }}" > README.md
           
-          echo "Initializing index.md"
-          echo "# ${{ inputs.package-name }}" > README.md
+      #    echo "Initializing index.md"
+      #    echo "# ${{ inputs.package-name }}" > README.md
           
-          echo "Removing Example Project"
-          find Runtime -type f ! -name '*.asmdef' -delete
-          find Editor -type f ! -name '*.asmdef' -delete
-          find Tests -type f ! -name '*.asmdef' -delete
+      #    echo "Removing Example Project"
+      #    find Runtime -type f ! -name '*.asmdef' -delete
+      #    find Editor -type f ! -name '*.asmdef' -delete
+      #    find Tests -type f ! -name '*.asmdef' -delete
           
-          echo "Clearing documentation"
-          find Documentation~/manual -type f ! -name 'getting-started.md' -delete
-          find Documentation~/resources -type f ! -name '.nodoc' -delete
+      #    echo "Clearing documentation"
+      #    find Documentation~/manual -type f ! -name 'getting-started.md' -delete
+      #    find Documentation~/resources -type f ! -name '.nodoc' -delete
           
-          echo "Removing '.meta' files"
-          find . -name '*.meta' -type f -delete
+      #    echo "Removing '.meta' files"
+      #    find . -name '*.meta' -type f -delete
           
-          echo "Updating documentation url in package.json"
-          REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')
-          REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1 | tr '[:upper:]' '[:lower:]')
-          jq ".documentationUrl = \"$REPO_OWNER.github.io/$REPO_NAME\"" package.json > temp.json && mv temp.json package.json
+      #    echo "Updating documentation url in package.json"
+      #    REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')
+      #    REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1 | tr '[:upper:]' '[:lower:]')
+      #    jq ".documentationUrl = \"$REPO_OWNER.github.io/$REPO_NAME\"" package.json > temp.json && mv temp.json package.json
           
-          echo "Removing initialization workflow file"
-          rm .github/workflows/initialize.yml
+      #    echo "Removing initialization workflow file"
+      #    rm .github/workflows/initialize.yml
 
       - name: Commit and Push
         uses: EndBug/add-and-commit@v9.1.1
