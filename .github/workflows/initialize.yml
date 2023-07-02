@@ -33,7 +33,6 @@ jobs:
           fetch-depth: 0
           ref: main
           
-      
       - name: Generate new GUIDs for .meta files
         run: |
           ALL_ASMDEF_FILES=$(find . -type f -name "*.asmdef")
@@ -43,6 +42,7 @@ jobs:
             NEW_GUID=$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]')
             sed -i "s/$OLD_GUID/$NEW_GUID/" "$META_FILE"
             
+            # If generating GUID for asmdef file, update references to it on other asmdef files
             if [[ $META_FILE == *.asmdef.meta ]]; then
               for ASMDEF_FILE in $ALL_ASMDEF_FILES; do
                 sed -i "s/$OLD_GUID/$NEW_GUID/" "$ASMDEF_FILE"
