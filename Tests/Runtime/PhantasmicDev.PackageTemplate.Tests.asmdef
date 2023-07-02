@@ -3,6 +3,7 @@
     "rootNamespace": "PhantasmicDev.PackageTemplate.Tests",
     "references": [
         "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
         "PhantasmicDev.PackageTemplate"
     ],
     "includePlatforms": [],
