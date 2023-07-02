@@ -23,7 +23,7 @@ jobs:
       company-name: ${{ inputs.company-name }}
       
   initialize:
-    runs-on: ubuntu-latests
+    runs-on: ubuntu-latest
     needs: [call-local-rename-workflow]
     
     steps:
@@ -36,9 +36,20 @@ jobs:
       
       - name: Generate new GUIDs for .meta files
         run: |
+          ALL_ASMDEF_FILES=$(find . -type f -name "*.asmdef")
+          
           find . -type f -name "*.meta" | while read -r META_FILE; do
-            NEW_GUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
-            sed -i "s/\"guid\": \"[0-9a-f]\{32\}\"/\"guid\": \"$NEW_GUID\"/" "$META_FILE"
+            OLD_GUID=$(grep -Po '(?<=^guid: ).*' "$META_FILE")
+            NEW_GUID=$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]')
+            sed -i "s/$OLD_GUID/$NEW_GUID/" "$META_FILE"
+            
+            if [[ $META_FILE == *.asmdef.meta ]]; then
+              for ASMDEF_FILE in $ALL_ASMDEF_FILES; do
+                sed -i "s/$OLD_GUID/$NEW_GUID/" "$ASMDEF_FILE"
+                echo "Updated reference in $ASMDEF_FILE from $OLD_GUID to $NEW_GUID"
+              done
+            fi
+            
           done
 
       #- name: Remove and Clear Files
