@@ -2,6 +2,8 @@
     "name": "PhantasmicDev.PackageTemplate.Tests.Editor",
     "rootNamespace": "",
     "references": [
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
         "PhantasmicDev.PackageTemplate",
         "PhantasmicDev.PackageTemplate.Editor"
     ],
@@ -12,6 +14,10 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

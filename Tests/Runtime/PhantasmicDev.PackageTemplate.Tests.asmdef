@@ -2,6 +2,7 @@
     "name": "PhantasmicDev.PackageTemplate.Tests",
     "rootNamespace": "",
     "references": [
+        "UnityEngine.TestRunner",
         "PhantasmicDev.PackageTemplate"
     ],
     "includePlatforms": [],
@@ -9,6 +10,10 @@
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
