@@ -28,7 +28,7 @@ jobs:
         run: |
           ROOT_NAMESPACE="${{ inputs.root-namespace }}"          
           if [ -z "$ROOT_NAMESPACE" ]; then
-            ROOT_NAMESPACE="${{ inputs.company-name }}"."${{ inputs.package-name }}"
+            ROOT_NAMESPACE=$(echo "${{ inputs.company-name }}"."${{ inputs.package-name }}" | sed 's/ //g')
             echo "Root Namespace was not provided, '$ROOT_NAMESPACE' will be used"
           fi
           
