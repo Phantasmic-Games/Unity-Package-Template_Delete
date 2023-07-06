@@ -72,7 +72,8 @@
       "_enableSearch": true
     },
     "template": [
-      "default"
+      "default",
+      "templates/upm-package-fx"
     ],
     "xref": [
       "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
