@@ -4,23 +4,43 @@ on:
   workflow_dispatch:
     inputs:
       package-name:
-        description: "Package Name"
+        description: Package Name
         required: true
       company-name:
-        description: "Company Name"
+        description: Company Name
         required: true
       official-name:
-        description: "Official Name"
+        description: Official Name
+      root-namespace:
+        description: Root Namespace
         
 permissions:
   contents: write
   
 jobs:
+  determine-root-namespace:
+    runs-on: ubuntu-latest
+    outputs:
+      root-namespace: ${{ steps.determine-root-namespace.outputs.root-namespace }}
+    steps:
+      - name: Determine root namespace
+        id: determine-root-namespace
+        run: |
+          ROOT_NAMESPACE="${{ inputs.root-namespace }}"          
+          if [ -z "$ROOT_NAMESPACE" ]; then
+            ROOT_NAMESPACE="${{ inputs.company-name }}"."${{ inputs.package-name }}"
+            echo "Root Namespace was not provided, '$ROOT_NAMESPACE' will be used"
+          fi
+          
+          echo "root-namespace=$ROOT_NAMESPACE" >> "$GITHUB_OUTPUT"
+    
   call-local-rename-workflow:
+    needs: [determine-root-namespace]
     uses: ./.github/workflows/rename-package.yml
     with:
       package-name: ${{ inputs.package-name }}
       company-name: ${{ inputs.company-name }}
+      root-namespace: ${{ needs.determine-root-namespace.outputs.root-namespace }}
       
   initialize:
     runs-on: ubuntu-latest
