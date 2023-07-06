@@ -12,6 +12,9 @@ on:
       official-name:
         description: Official Name
         required: false
+      root-namespace:
+        description: Root Namespace
+        required: false
         
   workflow_call:
     inputs:
@@ -22,6 +25,9 @@ on:
         type: string
         required: true
       official-name:
+        type: string
+        required: false
+      root-namespace:
         type: string
         required: false
         
@@ -35,4 +41,4 @@ jobs:
       package-name: ${{ inputs.package-name }}
       company-name: ${{ inputs.company-name }}
       official-name: ${{ inputs.official-name }}
-      
+      root-namespace: ${{ inputs.root-namespace }}

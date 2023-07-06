@@ -4,26 +4,46 @@ on:
   workflow_dispatch:
     inputs:
       package-name:
-        description: "Package Name"
+        description: Package Name
         required: true
       company-name:
-        description: "Company Name"
+        description: Company Name
         required: true
       official-name:
-        description: "Official Name"
+        description: Official Name
+      root-namespace:
+        description: Root Namespace
         
 permissions:
   contents: write
   
 jobs:
+  determine-root-namespace:
+    runs-on: ubuntu-latest
+    outputs:
+      root-namespace: ${{ steps.determine-root-namespace.outputs.root-namespace }}
+    steps:
+      - name: Determine root namespace
+        id: determine-root-namespace
+        run: |
+          ROOT_NAMESPACE="${{ inputs.root-namespace }}"          
+          if [ -z "$ROOT_NAMESPACE" ]; then
+            ROOT_NAMESPACE=$(echo "${{ inputs.company-name }}"."${{ inputs.package-name }}" | sed 's/ //g')
+            echo "Root Namespace was not provided, '$ROOT_NAMESPACE' will be used"
+          fi
+          
+          echo "root-namespace=$ROOT_NAMESPACE" >> "$GITHUB_OUTPUT"
+    
   call-local-rename-workflow:
+    needs: [determine-root-namespace]
     uses: ./.github/workflows/rename-package.yml
     with:
       package-name: ${{ inputs.package-name }}
       company-name: ${{ inputs.company-name }}
+      root-namespace: ${{ needs.determine-root-namespace.outputs.root-namespace }}
       
   initialize:
-    runs-on: ubuntu-latests
+    runs-on: ubuntu-latest
     needs: [call-local-rename-workflow]
     
     steps:
@@ -32,34 +52,53 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-
-      - name: Remove and Clear Files
+          
+      - name: Generate new GUIDs for .meta files
         run: |
-          echo "Initializing README.md"
-          echo "# ${{ inputs.package-name }}" > README.md
+          ALL_ASMDEF_FILES=$(find . -type f -name "*.asmdef")
           
-          echo "Initializing index.md"
-          echo "# ${{ inputs.package-name }}" > README.md
+          find . -type f -name "*.meta" | while read -r META_FILE; do
+            OLD_GUID=$(grep -Po '(?<=^guid: ).*' "$META_FILE")
+            NEW_GUID=$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]')
+            sed -i "s/$OLD_GUID/$NEW_GUID/" "$META_FILE"
+            
+            # If generating GUID for asmdef file, update references to it on other asmdef files
+            if [[ $META_FILE == *.asmdef.meta ]]; then
+              for ASMDEF_FILE in $ALL_ASMDEF_FILES; do
+                sed -i "s/$OLD_GUID/$NEW_GUID/" "$ASMDEF_FILE"
+                echo "Updated reference in $ASMDEF_FILE from $OLD_GUID to $NEW_GUID"
+              done
+            fi
+            
+          done
+
+      #- name: Remove and Clear Files
+      #  run: |
+      #    echo "Initializing README.md"
+      #    echo "# ${{ inputs.package-name }}" > README.md
           
-          echo "Removing Example Project"
-          find Runtime -type f ! -name '*.asmdef' -delete
-          find Editor -type f ! -name '*.asmdef' -delete
-          find Tests -type f ! -name '*.asmdef' -delete
+      #    echo "Initializing index.md"
+      #    echo "# ${{ inputs.package-name }}" > README.md
           
-          echo "Clearing documentation"
-          find Documentation~/manual -type f ! -name 'getting-started.md' -delete
-          find Documentation~/resources -type f ! -name '.nodoc' -delete
+      #    echo "Removing Example Project"
+      #    find Runtime -type f ! -name '*.asmdef' -delete
+      #    find Editor -type f ! -name '*.asmdef' -delete
+      #    find Tests -type f ! -name '*.asmdef' -delete
           
-          echo "Removing '.meta' files"
-          find . -name '*.meta' -type f -delete
+      #    echo "Clearing documentation"
+      #    find Documentation~/manual -type f ! -name 'getting-started.md' -delete
+      #    find Documentation~/resources -type f ! -name '.nodoc' -delete
           
-          echo "Updating documentation url in package.json"
-          REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')
-          REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1 | tr '[:upper:]' '[:lower:]')
-          jq ".documentationUrl = \"$REPO_OWNER.github.io/$REPO_NAME\"" package.json > temp.json && mv temp.json package.json
+      #    echo "Removing '.meta' files"
+      #    find . -name '*.meta' -type f -delete
           
-          echo "Removing initialization workflow file"
-          rm .github/workflows/initialize.yml
+      #    echo "Updating documentation url in package.json"
+      #    REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2 | tr '[:upper:]' '[:lower:]')
+      #    REPO_OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1 | tr '[:upper:]' '[:lower:]')
+      #    jq ".documentationUrl = \"$REPO_OWNER.github.io/$REPO_NAME\"" package.json > temp.json && mv temp.json package.json
+          
+      #    echo "Removing initialization workflow file"
+      #    rm .github/workflows/initialize.yml
 
       - name: Commit and Push
         uses: EndBug/add-and-commit@v9.1.1
