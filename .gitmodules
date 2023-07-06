@@ -1,0 +1,3 @@
+[submodule "Documentation~/templates/upm-package-fx"]
+	path = Documentation~/templates/upm-package-fx
+	url = https://github.com/PhantasmicDev/upm-package-fx.git
