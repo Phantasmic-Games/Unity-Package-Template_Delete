@@ -27,6 +27,9 @@ on:
       official-name:
         type: string
         required: false
+      root-namespace:
+        type: string
+        required: false
         
 permissions:
   contents: write
